@@ -1,7 +1,8 @@
 (ns mba.core
-  (:require [org.httpkit.client :as http]
+  (:require [beagle.phrases :as beagle]
+            [clojure.core.async :refer [chan pipeline to-chan <!! close!]]
             [jsonista.core :as json]
-            [beagle.phrases :as beagle])
+            [org.httpkit.client :as http])
   (:import (org.jsoup Jsoup)
            (org.jsoup.nodes Document)
            (java.time LocalDate)))
@@ -28,19 +29,28 @@
        (let [[_ & data] (-> resp :body (json/read-value))]
          (map (fn [data-line] (apply ->archive-record data-line)) data)))))
 
+(defn search=in-archive-records
+  [highlighter-fn archive-records opts]
+  (let [concurrency (or (:concurrency opts) 16)
+        out (chan (or concurrency 16))
+        xf (map (fn [archive-record]
+                  (let [html  (fetch-snapshot
+                                (:original archive-record)
+                                (:timestamp archive-record))
+                        text (.text (.body ^Document (Jsoup/parse html)))
+                        hits (highlighter-fn text)]
+                      (assoc archive-record
+                        :html html
+                        :text text
+                        :hits hits))))]
+    (pipeline concurrency out xf (to-chan archive-records))
+    (let [output (doall (map (fn [_] (<!! out)) (range (count archive-records))))]
+      (close! out)
+      output)))
+
 ; (search-in-pages
 ;  {:dictionary [{:text "Dainius Jocas"}]
 ;   :search {:url "tokenmill.lt" :from "2016" :limit 50}})
-
 (defn search-in-pages [{:keys [dictionary search]}]
-  (let [highlighter (beagle/highlighter dictionary)]
-    (->> (query-archive-cdx search)
-         (map (fn [archive-item]
-                (assoc archive-item
-                  :html (fetch-snapshot
-                          (:original archive-item)
-                          (:timestamp archive-item)))))
-         (map (fn [with-html]
-                (assoc with-html :text (.text (.body ^Document (Jsoup/parse (:html with-html)))))))
-         (map (fn [with-text]
-                (assoc with-text :highlights (highlighter (:text with-text))))))))
+  (let [highlighter-fn (beagle/highlighter dictionary)]
+    (search=in-archive-records highlighter-fn (query-archive-cdx search) {})))
