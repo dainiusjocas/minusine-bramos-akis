@@ -1,0 +1,14 @@
+name: Clojure CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: clojure:tools-deps-alpine
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Unit Tests
+        run: clojure -A:test
+        
