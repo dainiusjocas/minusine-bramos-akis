@@ -53,6 +53,7 @@
     (search-in-archive-records highlighter-fn (query-archive-cdx search) {})))
 
 (comment
-  (search-in-pages
-    {:dictionary [{:text "Dainius Jocas"}]
-     :search {:url "tokenmill.lt" :from "2016" :limit 50}}))
+  (map #(select-keys % [:original :hits])
+       (search-in-pages
+         {:dictionary [{:text "Dainius Jocas"}]
+          :search     {:url "tokenmill.lt" :from "2016" :limit 50}})))
