@@ -23,6 +23,7 @@ jobs:
         uses: DeLaGuardo/clojure-lint-action@v1
         with:
           clj-kondo-args: --lint src test
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Unit Tests
         run: clojure -A:test
