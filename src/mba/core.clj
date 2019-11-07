@@ -29,7 +29,7 @@
        (let [[_ & data] (-> resp :body (json/read-value))]
          (map (fn [data-line] (apply ->archive-record data-line)) data)))))
 
-(defn search=in-archive-records
+(defn search-in-archive-records
   [highlighter-fn archive-records opts]
   (let [concurrency (or (:concurrency opts) 16)
         out (chan (or concurrency 16))
@@ -39,18 +39,20 @@
                                 (:timestamp archive-record))
                         text (.text (.body ^Document (Jsoup/parse html)))
                         hits (highlighter-fn text)]
-                      (assoc archive-record
-                        :html html
-                        :text text
-                        :hits hits))))]
+                    (assoc archive-record
+                      :html html
+                      :text text
+                      :hits hits))))]
     (pipeline concurrency out xf (to-chan archive-records))
     (let [output (doall (map (fn [_] (<!! out)) (range (count archive-records))))]
       (close! out)
       output)))
 
-; (search-in-pages
-;  {:dictionary [{:text "Dainius Jocas"}]
-;   :search {:url "tokenmill.lt" :from "2016" :limit 50}})
 (defn search-in-pages [{:keys [dictionary search]}]
   (let [highlighter-fn (beagle/highlighter dictionary)]
-    (search=in-archive-records highlighter-fn (query-archive-cdx search) {})))
+    (search-in-archive-records highlighter-fn (query-archive-cdx search) {})))
+
+(comment
+  (search-in-pages
+    {:dictionary [{:text "Dainius Jocas"}]
+     :search {:url "tokenmill.lt" :from "2016" :limit 50}}))
