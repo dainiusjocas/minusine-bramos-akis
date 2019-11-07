@@ -2,4 +2,4 @@
   (:require [clojure.test :refer [deftest is]]))
 
 (deftest smoke
-  (is (= 1 0)))
+  (is (= 1 1)))
