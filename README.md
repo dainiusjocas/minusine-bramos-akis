@@ -1,6 +1,6 @@
 # Minusinė Bramos akis
 
-![](https://github.com/dainiusjocas/minusine-bramos-akis/workflows/Clojure%20CI/badge.svg)
+![](https://github.com/dainiusjocas/minusine-bramos-akis/workflows/Linting%20and%20Unit%20Tests/badge.svg)
 
 <img src="doc/goldman-sachs.jpg"
  alt="Goldman Sachs but not Like Hillary" title="Goldman Sachs but not Like Hillary"
