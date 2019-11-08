@@ -10,12 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: actions/cache@v1
+      - name: Cache maven deps
+        uses: actions/cache@v1
         with:
           path: ~/.m2/repository
-            key: maven-deps
-            restore-keys: |
-              maven-deps
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/deps.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - name: Prepare java
         uses: actions/setup-java@v1
