@@ -12,10 +12,10 @@ jobs:
 
       - uses: actions/cache@v1
         with:
-        path: ~/.m2/repository
-          key: maven-deps
-          restore-keys: |
-            maven-deps
+          path: ~/.m2/repository
+            key: maven-deps
+            restore-keys: |
+              maven-deps
 
       - name: Prepare java
         uses: actions/setup-java@v1
