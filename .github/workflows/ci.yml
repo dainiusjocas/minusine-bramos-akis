@@ -13,9 +13,9 @@ jobs:
       - uses: actions/cache@v1
         with:
         path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/deps.edn') }}
+          key: maven-deps
           restore-keys: |
-            ${{ runner.os }}-maven-
+            maven-deps
 
       - name: Prepare java
         uses: actions/setup-java@v1
