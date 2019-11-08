@@ -13,14 +13,24 @@
 
 (defn query-archive-cdx
   "Returns a list of archive-records"
-  [{:keys [url limit from to]}]
+  [{:keys [url limit from to offset]}]
   @(http/request
-     {:method :get
-      :url    (format "http://web.archive.org/cdx/search/cdx?url=%s&output=json&limit=%s&from=%s&to=%s"
-                      url
-                      (or limit 5)
-                      (or from "1990")
-                      (or to (inc (.getYear (LocalDate/now)))))}
+     {:method       :get
+      :url          "http://web.archive.org/cdx/search/cdx"
+      :query-params {:url    url
+                     :output "json"
+                     :from   (or from "1990")
+                     :to     (or to (inc (.getYear (LocalDate/now))))
+                     :limit  (or limit 5)
+                     :offset (or offset 0)}}
      (fn [resp]
        (let [[_ & data] (-> resp :body (json/read-value))]
          (map (fn [data-line] (apply ->archive-record data-line)) data)))))
+
+(defn fetch-n-pages
+  ([query n] (fetch-n-pages query n (min 1 n) 0))
+  ([query n step offset]
+   (prn "Step:" step "offset:" offset)
+   (when (< offset n)
+     (take n (lazy-cat (query-archive-cdx (assoc query :limit step :offset offset))
+                       (fetch-n-pages query n step (+ step offset)))))))
