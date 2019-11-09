@@ -8,7 +8,9 @@
            org.apache.lucene/lucene-core    {:mvn/version "8.3.0"}
            org.apache.lucene/lucene-monitor {:mvn/version "8.3.0"}}
  :paths ["src" "resources"]
- :aliases {:test
+ :aliases {:dev
+           {:extra-paths ["test"]}
+           :test
            {:extra-paths ["test"]
             :extra-deps  {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
                                                      :sha     "028a6d41ac9ac5d5c405dfc38e4da6b4cc1255d5"}

@@ -1,10 +1,7 @@
 (ns mba.archive
-  (:require [jsonista.core :as json]
-            [org.httpkit.client :as http]
-            [clojure.tools.logging :as log]))
-
-(defrecord archive-record
-  [url-key timestamp original mimetype status-code digest length dupecount])
+  (:require [clojure.tools.logging :as log]
+            [jsonista.core :as json]
+            [org.httpkit.client :as http]))
 
 (defn fetch-snapshot [original timestamp]
   @(http/request
@@ -14,26 +11,35 @@
 
 (defn remove-nil-vals [m] (into {} (remove (comp nil? second) m)))
 
+(def default-query-params
+  {:output        "json"
+   :limit         5
+   :offset        0
+   :showDupeCount true
+   :fastLatest    true
+   :collapse      "digest"})
+
+(defn prepare-filters [filters]
+  (map #(str (name (first %)) ":" (second %)) filters))
+
+(defn prepare-query-params [default-query-params query-params]
+  (remove-nil-vals
+    (merge default-query-params
+           (update query-params :filter prepare-filters))))
+
 (defn query-archive-cdx
   "Returns a list of archive-records"
-  [{:keys [url limit from to offset]}]
+  [{:keys [limit offset] :as query-params}]
   (log/debugf "Limit %s offset %s" limit offset)
   @(http/request
      {:method       :get
       :url          "http://web.archive.org/cdx/search/cdx"
-      :query-params (remove-nil-vals
-                      {:url           url
-                       :output        "json"
-                       :from          from
-                       :to            to
-                       :limit         (or limit 5)
-                       :offset        (or offset 0)
-                       :showDupeCount true
-                       :fastLatest    true
-                       :collapse      "digest"})}
-     (fn [resp]
-       (let [[_ & data] (-> resp :body (json/read-value))]
-         (map (fn [data-line] (apply ->archive-record data-line)) data)))))
+      :query-params (prepare-query-params default-query-params query-params)}
+     (fn [{:keys [body status]}]
+       (when (= 200 status)
+         (let [[header & data] (json/read-value body)
+               keys (map keyword header)]
+           (map (fn [data-line] (zipmap keys data-line)) data))))))
 
 (def default-step 1000)
 
@@ -44,7 +50,6 @@
    If query :limit is not provided then default-step is used."
   ([query] (fetch-coordinates query {}))
   ([{:keys [offset limit] :as query} {:keys [n previous-was-empty? fetched] :as opts}]
-   (log/debugf "Fetching %s" opts)
    (when (and (not previous-was-empty?) (or (nil? n) (nil? fetched) (< fetched n)))
      (let [step (if n
                   (min (or limit default-step) (- n (or fetched 0)))
