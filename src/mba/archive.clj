@@ -1,5 +1,6 @@
 (ns mba.archive
   (:require [clojure.tools.logging :as log]
+            [clojure.spec.alpha :as s]
             [jsonista.core :as json]
             [org.httpkit.client :as http]))
 
@@ -11,6 +12,22 @@
 
 (defn remove-nil-vals [m] (into {} (remove (comp nil? second) m)))
 
+(s/def ::urlkey (s/nilable string?))
+(s/def ::timestamp (s/nilable string?))
+(s/def ::original (s/nilable string?))
+(s/def ::mimetype (s/nilable string?))
+(s/def ::statuscode (s/nilable (or pos-int? string?)))
+(s/def ::digest (s/nilable string?))
+(s/def ::length (s/nilable string?))
+(s/def ::dupecount (s/nilable string?))
+
+(s/def ::strings (s/coll-of string?))
+
+(s/def ::filter
+  (s/keys :req-un []
+          :opt-un [::urlkey ::timestamp ::original ::mimetype
+                   ::statuscode ::digest ::length ::dupecount]))
+
 (def default-query-params
   {:output        "json"
    :limit         5
@@ -20,7 +37,11 @@
    :collapse      "digest"})
 
 (defn prepare-filters [filters]
-  (map #(str (name (first %)) ":" (second %)) filters))
+  (map #(str (name (first %)) ":" (second %)) (remove-nil-vals filters)))
+
+(s/fdef prepare-filters
+        :args (s/cat :filter ::filter)
+        :ret ::strings)
 
 (defn prepare-query-params [default-query-params query-params]
   (remove-nil-vals
