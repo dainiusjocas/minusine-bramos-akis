@@ -7,15 +7,15 @@
 
 (defn search-in-archive-records
   [highlighter-fn archive-records opts]
-  (let [concurrency (or (:concurrency opts) 16)
-        out (chan (or concurrency 16))
+  (let [concurrency (or (:concurrency opts) 64)
+        out (chan (or concurrency 64))
         xf (map (fn [archive-record]
-                  (let [html  (archive/fetch-snapshot
-                                (:original archive-record)
-                                (:timestamp archive-record))
+                  (let [archive-url (archive/wayback-machine-url archive-record)
+                        html  (archive/get-body archive-url)
                         text (.text (.body ^Document (Jsoup/parse html)))
                         hits (highlighter-fn text)]
                     (assoc archive-record
+                      :archive-url archive-url
                       :html html
                       :text text
                       :hits hits))))]
@@ -26,10 +26,15 @@
 
 (defn search-in-pages [{:keys [dictionary search]}]
   (let [highlighter-fn (beagle/highlighter dictionary)]
-    (search-in-archive-records highlighter-fn (archive/query-archive-cdx search) {})))
+    (search-in-archive-records highlighter-fn
+                               (archive/fetch-coordinates
+                                 (merge search
+                                        {:filter {::archive/statuscode 200
+                                                  ::archive/mimetype "text/html"}})
+                                 {:n 50}) {})))
 
 (comment
-  (map #(select-keys % [:original :hits])
-       (search-in-pages
-         {:dictionary [{:text "Dainius Jocas"}]
-          :search     {:url "tokenmill.lt" :from "2016" :limit 50}})))
+  (map #(select-keys % [:original :hits :archive-url])
+       (remove #(empty? (:hits %)) (search-in-pages
+                                     {:dictionary [{:text "Karbauskis"}]
+                                      :search     {:url "delfi.lt/news/.*" :from "2016"}}))))

@@ -4,11 +4,17 @@
             [jsonista.core :as json]
             [org.httpkit.client :as http]))
 
-(defn fetch-snapshot [original timestamp]
+(defn get-body [url]
   @(http/request
      {:method :get
-      :url    (format "http://web.archive.org/web/%s/%s" timestamp original)}
+      :url    url}
      (fn [resp] (-> resp :body))))
+
+(defn wayback-machine-url [{:keys [original timestamp]}]
+  (format "http://web.archive.org/web/%s/%s" timestamp original))
+
+(defn fetch-snapshot [coordinate]
+  (get-body (wayback-machine-url coordinate)))
 
 (defn remove-nil-vals [m] (into {} (remove (comp nil? second) m)))
 
