@@ -4,6 +4,8 @@
             [jsonista.core :as json]
             [org.httpkit.client :as http]))
 
+; API for https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server#basic-usage
+
 (defn get-body [url]
   @(http/request
      {:method :get
