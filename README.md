@@ -11,8 +11,12 @@
 
 ## Lambda Usage
 
+Set environment variables:
+- API_ID, as documented [here](https://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example.html)
+- AWS_DEFAULT_REGION
+
 ```bash
-curl -s -X POST https://t39kq6o310.execute-api.eu-central-1.amazonaws.com/Prod/observe -d '
+curl -s -X POST https://$API_ID.execute-api.$AWS_DEFAULT_REGION.amazonaws.com/Prod/observe -d '
 {
   "dictionary": [{"text":"Karbauskis"}],
   "search": {
@@ -20,7 +24,10 @@ curl -s -X POST https://t39kq6o310.execute-api.eu-central-1.amazonaws.com/Prod/o
  }
 }
 ' | json_pp
-=>
+```
+
+This request should yield:
+```json
 [
    {
       "hits" : [
