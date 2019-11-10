@@ -3,7 +3,10 @@ test:
 	clojure -A:test
 
 uberjar:
-	clojure -A:lambda-uberjar
+	rm -rf classes
+	mkdir classes
+	clojure -R:uberjar compiler.clj
+	clojure -A:uberjar --target target/minusine-bramos-akis.jar
 
 package-mba: uberjar
 	aws cloudformation package \

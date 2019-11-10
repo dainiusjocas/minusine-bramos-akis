@@ -1,12 +1,12 @@
 (ns mba.lambda
-  (:gen-class
-    :name mba.Api
-    :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
   (:require [clojure.java.io :as io]
             [clojure.tools.logging :as log]
             [mba.json :as json]
             [mba.core :as mba])
-  (:import (java.io BufferedWriter InputStream)))
+  (:import (java.io BufferedWriter InputStream))
+  (:gen-class
+    :name mba.Api
+    :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))
 
 (defn decode-body [^InputStream is]
   (try
