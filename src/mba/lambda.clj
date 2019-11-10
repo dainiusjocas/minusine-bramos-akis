@@ -4,7 +4,8 @@
     :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
   (:require [clojure.java.io :as io]
             [clojure.tools.logging :as log]
-            [mba.json :as json])
+            [mba.json :as json]
+            [mba.core :as mba])
   (:import (java.io BufferedWriter InputStream)))
 
 (defn decode-body [^InputStream is]
@@ -18,8 +19,14 @@
     (.write w ^String (json/encode body))))
 
 (defn -handleRequest [_ is os _]
-  (let [{body :body} (decode-body is)]
+  (let [{body :body} (decode-body is)
+        request (json/decode body)
+        _ (log/infof "Received body: %s of type %s" request (type request))
+        observed-content (->> request
+                              (mba/search-in-pages)
+                              (remove #(empty? (:hits %)))
+                              (map #(select-keys % [:original :hits :archive-url])))]
     (write-to-os
       os
       {:statusCode 200
-       :body       (json/encode body)})))
+       :body       (json/encode observed-content)})))

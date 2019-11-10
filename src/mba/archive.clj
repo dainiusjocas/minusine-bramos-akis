@@ -58,8 +58,8 @@
 
 (defn query-archive-cdx
   "Returns a list of archive-records"
-  [{:keys [limit offset] :as query-params}]
-  (log/debugf "Limit %s offset %s" limit offset)
+  [query-params]
+  (log/debugf "Querying CDX with %s" query-params)
   @(http/request
      {:method       :get
       :url          "http://web.archive.org/cdx/search/cdx"
