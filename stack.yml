@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+
+Resources:
+  observer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 30
+      Tracing: "Active"
+      MemorySize: 3008
+      Handler: mba.Api::handleRequest
+      Runtime: java8
+      CodeUri: target/minusine-bramos-akis-1.0.0-SNAPSHOT-standalone.jar
+      Policies:
+        - AWSLambdaExecute
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /observe
+            Method: post
+
+  observerLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${observer}
+      RetentionInDays: 1
