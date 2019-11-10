@@ -6,6 +6,16 @@
 
 ; API for https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server#basic-usage
 
+(defn save [url]
+  (http/request
+    {:method  :get
+     :timeout 5000
+     :url     (str "https://web.archive.org/save/" url)}
+    (fn [{:keys [opts error] :as resp}]
+      (if error
+        (log/warnf "Error archiving `%s`" error)
+        (log/debugf "Archived `%s`" resp)))))
+
 (defn get-body [url]
   @(http/request
      {:method :get
