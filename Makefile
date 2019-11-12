@@ -5,7 +5,7 @@ test:
 uberjar:
 	rm -rf classes
 	mkdir classes
-	clojure -R:uberjar compiler.clj
+	./compile.clj
 	clojure -A:uberjar --target target/minusine-bramos-akis.jar
 
 package-mba: uberjar
