@@ -1,0 +1,13 @@
+{
+  "name": "minusine-bramos-akis",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "shadow-cljs": "2.8.69"
+  },
+  "dependencies": {
+    "create-react-class": "^15.6.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  }
+}

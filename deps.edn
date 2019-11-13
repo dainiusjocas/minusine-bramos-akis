@@ -1,5 +1,5 @@
 {:deps    {org.clojure/clojure                {:mvn/version "1.10.1"}
-           org.clojure/core.async             {:mvn/version "0.4.500"}
+           org.clojure/core.async             {:mvn/version "0.5.527"}
            org.clojure/tools.logging          {:mvn/version "0.5.0"}
            http-kit                           {:mvn/version "2.4.0-alpha4"}
            ch.qos.logback/logback-classic     {:mvn/version "1.2.3"}
@@ -9,16 +9,24 @@
            org.apache.lucene/lucene-core      {:mvn/version "8.3.0"}
            org.apache.lucene/lucene-monitor   {:mvn/version "8.3.0"}
            com.amazonaws/aws-lambda-java-core {:mvn/version "1.0.0"}}
- :paths   ["src" "resources" "classes"]
+ :paths   ["src/clj" "resources" "classes"]
  :aliases {:dev
-           {:extra-paths ["test"]
-            :extra-deps  {org.clojure/test.check {:mvn/version "0.9.0"}}}
+                  {:extra-paths ["test/clj" "src/cljs" "public"]
+                   :extra-deps  {org.clojure/test.check {:mvn/version "0.9.0"}}}
            :test
-           {:extra-paths ["test"]
-            :extra-deps  {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
-                                                     :sha     "028a6d41ac9ac5d5c405dfc38e4da6b4cc1255d5"}
-                          org.clojure/test.check    {:mvn/version "0.9.0"}}
-            :main-opts   ["-m" "cognitect.test-runner"]}
+                  {:extra-paths ["test/clj"]
+                   :extra-deps  {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
+                                                            :sha     "028a6d41ac9ac5d5c405dfc38e4da6b4cc1255d5"}
+                                 org.clojure/test.check    {:mvn/version "0.9.0"}}
+                   :main-opts   ["-m" "cognitect.test-runner"]}
            :uberjar
-           {:extra-deps {uberdeps {:mvn/version "0.1.6"}}
-            :main-opts  ["-m" "uberdeps.uberjar"]}}}
+                  {:extra-deps {uberdeps {:mvn/version "0.1.6"}}
+                   :main-opts  ["-m" "uberdeps.uberjar"]}
+           :cljs
+                  {:extra-paths ["src/cljs" "public"]
+                   :extra-deps  {thheller/shadow-cljs      {:mvn/version "2.8.69"}
+                                 org.clojure/clojurescript {:mvn/version "1.10.520"}
+                                 devcards                  {:mvn/version "0.2.5"}
+                                 reagent                   {:mvn/version "0.9.0-rc2"}
+                                 re-frame                  {:mvn/version "0.11.0-rc2"}
+                                 cljs-http                 {:mvn/version "0.1.46"}}}}}

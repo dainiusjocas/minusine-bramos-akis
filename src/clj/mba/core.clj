@@ -1,7 +1,8 @@
 (ns mba.core
   (:require [beagle.phrases :as beagle]
             [clojure.core.async :refer [chan pipeline to-chan <!! close!]]
-            [mba.archive :as archive])
+            [mba.archive :as archive]
+            [clojure.tools.logging :as log])
   (:import (org.jsoup Jsoup)
            (org.jsoup.nodes Document)))
 
@@ -27,11 +28,11 @@
 (defn search-in-pages [{:keys [dictionary search]}]
   (let [highlighter-fn (beagle/highlighter dictionary)]
     (search-in-archive-records highlighter-fn
-                               (archive/fetch-coordinates
-                                 (merge search
-                                        {:filter {::archive/statuscode 200
-                                                  ::archive/mimetype "text/html"}})
-                                 {:n 50}) {})))
+                               (log/spy  (archive/fetch-coordinates
+                                  (merge search
+                                         {:filter {::archive/statuscode 200
+                                                   ::archive/mimetype   "text/html"}})
+                                  {:n 50})) {})))
 
 (comment
   (map #(select-keys % [:original :hits :archive-url])

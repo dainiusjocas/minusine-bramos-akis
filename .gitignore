@@ -14,3 +14,5 @@ pom.xml.asc
 .cpcache/
 .idea/
 .env
+.shadow-cljs/
+node_modules/

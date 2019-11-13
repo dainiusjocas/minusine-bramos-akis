@@ -1,0 +1,9 @@
+{:deps         {:aliases [:cljs]}
+ :source-paths ["src/cljs"]
+ :dependencies []
+ :dev-http     {8080 "public"}
+ :nrepl        {:port       9000
+                :middleware []}                             ; optional list of namespace-qualified symbols
+ :builds       {:frontend {:target   :browser
+                           :modules  {:main {:init-fn mba.app/init}}
+                           :devtools {:after-load mba.app/reload!}}}}

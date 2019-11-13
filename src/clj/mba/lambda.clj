@@ -29,4 +29,6 @@
     (write-to-os
       os
       {:statusCode 200
+       :headers    {"Access-Control-Allow-Origin" "*"
+                    "Content-Type" "application/json"}
        :body       (json/encode observed-content)})))
