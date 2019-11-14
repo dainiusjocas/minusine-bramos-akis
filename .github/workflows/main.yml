@@ -10,6 +10,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     
+    - name: Cache maven deps
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/deps.edn') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    
     - name: AWS cli install action
       uses: chrislennon/action-aws-cli@v1
       
@@ -18,9 +26,9 @@ jobs:
       with:
         java-version: 1.8
     - name: Install clojure tools-deps
-        uses: DeLaGuardo/setup-clojure@master
-        with:
-          tools-deps: 1.10.1.469
+      uses: DeLaGuardo/setup-clojure@master
+      with:
+        tools-deps: 1.10.1.469
           
     - name: Build the uberjar and deploy to AWS
       env:
