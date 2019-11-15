@@ -30,7 +30,7 @@ jobs:
         run: yarn add shadow-cljs
 
       - name: Release static resources
-        run: ./node_modules/shadow-cljs/bin/shadow-cljs -A:cljs release frontend
+        run: ./node_modules/shadow-cljs/cli/runner.js -A:cljs release frontend
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v2.5.0
