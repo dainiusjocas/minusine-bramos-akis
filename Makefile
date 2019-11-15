@@ -29,3 +29,6 @@ setup-ui:
 
 release-ui: setup-ui
 	./node_modules/shadow-cljs/cli/runner.js -A:cljs release frontend
+
+dev-ui: setup-ui
+	./node_modules/shadow-cljs/cli/runner.js -A:cljs watch frontend

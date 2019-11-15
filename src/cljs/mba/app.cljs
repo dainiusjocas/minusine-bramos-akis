@@ -5,7 +5,9 @@
     [reagent.debug]
     [reagent.core :as r]
     [cljs-http.client :as http]
-    [cljs.core.async :refer [<!]]))
+    [cljs.core.async :refer [<!]]
+    ["@material-ui/core" :as mui]
+    ["@material-ui/icons" :as mui-icons]))
 
 (defn call-mba []
   (go
@@ -21,13 +23,17 @@
 
 (defn simple-component []
   [:div
-   [:p "I am a component!"]
-   [:button
-    {:onClick call-mba}
-    "Buttonasdd"]
-   [:p.someclass
-    "I haves  " [:strong "bold"]
-    [:span {:style {:color "red"}} " and red "] "text."]])
+   [:h1 "Minusinė Bramos Akis"]
+   [:br]
+   [:> mui/FormControl
+    [:> mui/InputLabel {:htmlFor "my-input"} "Kur ieškoti "]
+    [:> mui/Input {:id "my-input" :aria-describedby "my-helper-text"}]
+    [:> mui/FormHelperText {:id "my-helper-text"} "Ieškoti su Minusine Bramos Akimi"]
+    [:> mui/Button
+     {:color :primary
+      :variant :contained
+      :on-click #(println "moo")}
+     "Ieškoti" [:> mui-icons/Search]]]])
 
 (defn init []
   (r/render [simple-component]
