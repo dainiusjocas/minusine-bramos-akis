@@ -6,4 +6,10 @@
                 :middleware []}                             ; optional list of namespace-qualified symbols
  :builds       {:frontend {:target   :browser
                            :modules  {:main {:init-fn mba.app/init}}
-                           :devtools {:after-load mba.app/reload!}}}}
+                           :devtools {:after-load mba.app/reload!}}
+                :devcards {:asset-path       "js"
+                           :modules          {:main {:init-fn mba.devcards/main}}
+                           :devtools         {:after-load mba.devcards/reload!}
+                           :compiler-options {:devcards true}
+                           :output-dir       "public/cards/js"
+                           :target           :browser}}}

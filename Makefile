@@ -32,3 +32,7 @@ release-ui: setup-ui
 
 dev-ui: setup-ui
 	./node_modules/shadow-cljs/cli/runner.js -A:cljs watch frontend
+
+cards-ui: setup-ui
+	./node_modules/shadow-cljs/cli/runner.js -A:cljs watch devcards
+
