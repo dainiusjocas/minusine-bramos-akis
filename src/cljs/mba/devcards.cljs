@@ -6,7 +6,6 @@
     [cljsjs.react.dom]
     [reagent.core :as r :include-macros true]
     [devcards.core :as devcards]
-    ["@material-ui/core" :as mui]
     [mba.table :as table]))
 
 (def bmi-data (r/atom {:height 180 :weight 80}))
