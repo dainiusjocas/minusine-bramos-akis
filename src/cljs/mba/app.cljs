@@ -19,8 +19,7 @@
 
 (defonce text-state (r/atom ""))
 
-(defonce found-data (r/atom [{:original "https://www.jocas.lt/", :hits [{:meta {}, :dict-entry-id "0", :begin-offset 881, :type "PHRASE", :end-offset 886, :text "Jocas"} {:meta {}, :dict-entry-id "0", :begin-offset 939, :end-offset 944, :type "PHRASE", :text "Jocas"} {:meta {}, :dict-entry-id "0", :end-offset 3316, :begin-offset 3311, :type "PHRASE", :text "Jocas"}], :archive-url "http://web.archive.org/web/20191109152029/https://www.jocas.lt/"}
-                             {:original "https://www.jocas.lt/", :hits [{:meta {}, :dict-entry-id "0", :begin-offset 881, :type "PHRASE", :end-offset 886, :text "Jocas"} {:meta {}, :dict-entry-id "0", :begin-offset 939, :end-offset 944, :type "PHRASE", :text "Jocas"} {:meta {}, :dict-entry-id "0", :end-offset 3316, :begin-offset 3311, :type "PHRASE", :text "Jocas"}], :archive-url "http://web.archive.org/web/20191110084139/https://www.jocas.lt/"}]))
+(defonce found-data (r/atom []))
 
 (defonce text-search-menu (r/atom {:open? false
                                    :case-sensitive? false}))

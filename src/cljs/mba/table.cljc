@@ -30,7 +30,7 @@
 (defn mui-table [resp]
   (let [data (prepare-data @resp)
         ks [:phrase :snippet :original :observed-date]]
-    [:> mui/Paper {:className "root"}
+    [:> mui/Paper {:className "root" :style {:display (if (seq data) "inline" "none")}}
      [:> mui/Table {:className "table" :aria-label "simple-table"}
       [:> mui/TableHead {:style {:backgroundColor "grey"}}
        (into [:> mui/TableRow]
