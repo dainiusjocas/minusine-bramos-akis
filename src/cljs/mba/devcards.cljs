@@ -1,6 +1,6 @@
 (ns mba.devcards
   (:require-macros
-    [devcards.core :refer [defcard defcard-rg]])
+    [devcards.core :refer [defcard]])
   (:require
     [cljsjs.react]
     [cljsjs.react.dom]

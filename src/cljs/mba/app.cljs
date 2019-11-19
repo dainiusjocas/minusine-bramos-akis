@@ -9,8 +9,7 @@
     [cljs-http.client :as http]
     [cljs.core.async :refer [<!]]
     ["@material-ui/core" :as mui]
-    ["@material-ui/icons" :as mui-icons]
-    [clojure.string :as s]))
+    ["@material-ui/icons" :as mui-icons]))
 
 (defn event-value
   [^js/Event e]
@@ -43,7 +42,7 @@
                                     :json-params       params}))]
        (reset! found-data (:body response))))))
 
-(defn execute-mba [e]
+(defn execute-mba [_]
   (let [input @input-state
         dictionary (remove #(s/blank? (:text %))
                            [{:text (get input "first-phrase")}
@@ -52,7 +51,7 @@
                             {:text (get input "fourth-phrase")}])
         url (get input "first-domain")
         from (when-let [from-date (get input "from-date")]
-               (if (not (s/blank? from-date))
+               (when (not (s/blank? from-date))
                  (s/replace from-date "-" "")))
         to (when-let [date-to (get input "date-to")]
              (s/replace date-to "-" ""))]
