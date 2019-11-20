@@ -62,15 +62,25 @@
                                      to (assoc :from to))})
       (println "BAD INPUT"))))
 
+(defonce side-navigation (r/atom false))
+
 (defn simple-component []
   [:div
+   [:> mui/SwipeableDrawer {:open @side-navigation
+                            :onClose #(reset! side-navigation false)
+                            :onOpen #(prn "foo")}
+    [:> mui/List
+     [:> mui/ListItem
+      [:> mui/ListItemIcon [:> mui-icons/Help]]
+      [:> mui/ListItemText "Help"]]]]
    [:> mui/AppBar {:position "fixed"}
     [:> mui/Toolbar
      [:> mui/Button {:edge       "start"
                      :className  "menuButton"
                      :color      "inherit"
                      :aria-label "menu"
-                     :style      {:marginRight 2}}
+                     :style      {:marginRight 2}
+                     :on-click #(reset! side-navigation true)}
       [:> mui-icons/Menu]]
      [:> mui/Typography {:variant "h6" :className "title" :style {:flexGrow 1}} "Minusinė Bramos Akis"]
      [:> mui/Button {:className "helpButton" :color "inherit"} [:> mui-icons/Help]]]]
