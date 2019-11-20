@@ -33,7 +33,7 @@
   ([] (call-mba {:dictionary [{:text "Jocas"}]
                  :search     {:url "jocas.lt"}}))
   ([params]
-   
+
    (go
      (let [response (<! (http/post "https://t39kq6o310.execute-api.eu-central-1.amazonaws.com/Prod/observe"
                                    {:with-credentials? false
@@ -73,79 +73,90 @@
                      :style      {:marginRight 2}}
       [:> mui-icons/Menu]]
      [:> mui/Typography {:variant "h6" :className "title" :style {:flexGrow 1}} "Minusinė Bramos Akis"]
-     #_[:> mui/Button {:className "helpButton" :color "inherit"} [:> mui-icons/Help]]]]
+     [:> mui/Button {:className "helpButton" :color "inherit"} [:> mui-icons/Help]]]]
    [:> mui/Toolbar]
 
    [:br]
 
-   [:div {:style {:flexGrow 1}}
-    [:> mui/Grid {:container true :spacing 1 :direction "row"}
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:required true
-                          :id (get @input-state "first-phrase")
-                          :label "Frazė"
-                          :margin "normal"
-                          :on-change (fn [e] (swap! input-state assoc "first-phrase" (event-value e)))}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:id (get @input-state "second-phrase")
-                          :label "Frazė"
-                          :margin "normal"
-                          :on-change (fn [e] (swap! input-state assoc "second-phrase" (event-value e)))}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:id (get @input-state "third-phrase")
-                          :label "Frazė"
-                          :margin "normal"
-                          :on-change (fn [e] (swap! input-state assoc "third-phrase" (event-value e)))}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:id (get @input-state "fourth-phrase")
-                          :label "Frazė"
-                          :margin "normal"
-                          :on-change (fn [e] (swap! input-state assoc "fourth-phrase" (event-value e)))}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:id        "date-from"
-                          :label     "Nuo"
-                          :type      "date"
-                          :margin    "normal"
-                          :value     (get @input-state "from-date")
-                          :on-change (fn [e] (swap! input-state assoc "from-date" (event-value e)))
-                          :className "from-date"}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:id        "date-to"
-                          :label     "Iki"
-                          :type      "date"
-                          :margin    "normal"
-                          :value     (get @input-state "date-to")
-                          :on-change (fn [e] (swap! input-state assoc "date-to" (event-value e)))
-                          :className "date-to"}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style}
-       [:> mui/TextField {:required true
-                          :id (get @input-state "first-domain")
-                          :label "Domenas"
-                          :defaultValue ""
-                          :margin "normal"
-                          :on-change (fn [e] (swap! input-state assoc "first-domain" (event-value e)))}]]]
-     [:> mui/Grid {:item true :xs 12 :sm 6}
-      [:> mui/Paper {:style cell-style} [:> mui/Button
-                                         {:color :primary
-                                          :variant :contained
-                                          :on-click execute-mba}
-                                         "Ieškoti" [:> mui-icons/Search]]]]]]
+   [:div {:style {:justify-content "center"
+                  :display "flex"}}
+    [:div.content-container {:style {:justify-content "center"
+                                     :display "block"}}
+     [:div {:style {:flexGrow 1 :max-width "800px"}}
+      [:> mui/Grid {:container true
+                    :spacing 1
+                    :direction "row"}
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:required true
+                            :id (get @input-state "first-phrase")
+                            :label "Frazė"
+                            :margin "normal"
+                            :on-change (fn [e] (swap! input-state assoc "first-phrase" (event-value e)))}]]]
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:id (get @input-state "second-phrase")
+                            :label "Frazė"
+                            :margin "normal"
+                            :on-change (fn [e] (swap! input-state assoc "second-phrase" (event-value e)))}]]]
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:id (get @input-state "third-phrase")
+                            :label "Frazė"
+                            :margin "normal"
+                            :on-change (fn [e] (swap! input-state assoc "third-phrase" (event-value e)))}]]]
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:id (get @input-state "fourth-phrase")
+                            :label "Frazė"
+                            :margin "normal"
+                            :on-change (fn [e] (swap! input-state assoc "fourth-phrase" (event-value e)))}]]]
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:id        "date-from"
+                            :label     "Nuo"
+                            :type      "date"
+                            :margin    "normal"
+                            :value     (get @input-state "from-date")
+                            :on-change (fn [e] (swap! input-state assoc "from-date" (event-value e)))
+                            :className "from-date"}]]]
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:id        "date-to"
+                            :label     "Iki"
+                            :type      "date"
+                            :margin    "normal"
+                            :value     (or (get @input-state "date-to") "2019")
+                            :on-change (fn [e] (swap! input-state assoc "date-to" (event-value e)))
+                            :className "date-to"}]]]
+       [:> mui/Grid {:item true :xs 12 :sm 6}
+        [:> mui/Paper {:style cell-style}
+         [:> mui/TextField {:required true
+                            :id (get @input-state "first-domain")
+                            :label "Domenas"
+                            :defaultValue ""
+                            :margin "normal"
+                            :on-change (fn [e] (swap! input-state assoc "first-domain" (event-value e)))}]]]
+       [:> mui/Grid {:item       true
+                     :xs         12
+                     :sm         6
+                     :alignItems "center"
+                     :style      {:justify-content "center" :display "flex"}}
+        [:> mui/Paper {:style cell-style} [:> mui/Button
+                                           {:color :primary
+                                            :variant :contained
+                                            :on-click execute-mba}
+                                           "Ieškoti" [:> mui-icons/Search]]]]]]
 
-   [:div [:> mui/Divider {:className   "divider"
-                          :orientation "horizontal"
-                          :variant     "middle"
-                          :absolute    true}]]
+     [:div [:> mui/Divider {:className   "divider"
+                            :orientation "horizontal"
+                            :variant     "middle"
+                            :absolute    true}]]
 
-   [:br]
+     [:br]
 
-   [:div (table/mui-table found-data)]])
+     [:div {:style {:flexGrow 1 :max-width "800px"}}
+      (table/mui-table found-data)]]]])
 
 (defn init []
   (r/render [simple-component]
