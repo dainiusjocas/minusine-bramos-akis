@@ -16,3 +16,4 @@ pom.xml.asc
 .env
 .shadow-cljs/
 node_modules/
+.clj-kondo/.cache/
