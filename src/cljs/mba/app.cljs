@@ -83,6 +83,24 @@
     [:div.content-container {:style {:justify-content "center"
                                      :display "block"}}
      [:div {:style {:flexGrow 1 :max-width "800px"}}
+      [:> mui/Card
+       [:> mui/CardContent
+        [:> mui/Typography {:gutterBottom true :color "textSecondary"}
+         "Apibrėžimas"]
+        [:> mui/Typography {:variant "h5" :component "h2"}
+         "Minusinė Bramos Akis"]
+        [:> mui/Typography {:color "textSecondary" :style {:marginBottom 12}}
+         "Viktor Pelevin, \"iPhuck 10\", 2017, 207-208p"]
+        [:> mui/Typography {:variant "body2" :component "p"}
+         "pusiau sąmoningas randominis neuronų tinklas,
+         suteikiantis ribotą prieigą prie visų praeities įvykių,
+         palikusių elektroninį arba šviesos atspaudą,
+         net jeigu tas atspaudas jau sunaikintas."]]
+       [:> mui/CardActions [:> mui/Button "Plačiau TODO"]]]]
+
+     [:br]
+
+     [:div {:style {:flexGrow 1 :max-width "800px"}}
       [:> mui/Grid {:container true
                     :spacing 1
                     :direction "row"}
