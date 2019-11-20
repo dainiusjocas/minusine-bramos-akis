@@ -25,34 +25,6 @@
                         (when (not= param :bmi)
                           (swap! bmi-data assoc :bmi nil)))}])
 
-(defn bmi-component [bmi-data]
-  (let [{:keys [weight height bmi]} (calc-bmi @bmi-data)
-        [color diagnose] (cond
-                           (< bmi 18.5) ["orange" "underweight"]
-                           (< bmi 25) ["inherit" "normal"]
-                           (< bmi 30) ["orange" "overweight"]
-                           :else ["red" "obese"])]
-    [:div
-     [:h3 "BMI XXXXXXX calculator"]
-     [:div
-      "Height: " (int height) "cm"
-      [slider bmi-data :height height 100 220]]
-     [:div
-      "Weight: " (int weight) "kg"
-      [slider bmi-data :weight weight 30 150]]
-     [:div
-      "BMI: " (int bmi) " "
-      [:span {:style {:color color}} diagnose]
-      [slider bmi-data :bmi bmi 10 50]]]))
-
-#_(defcard bmi-calculator
-           "*Code taken from the Reagent readme.*"
-           (devcards/reagent bmi-component)
-           bmi-data
-           {:inspect-data true
-            :frame true
-            :history true})
-
 (defn resp-component [resp]
   (let [ks (keys (first @resp))]
     [:table
@@ -67,31 +39,31 @@
                 @resp (range)))]))
 
 (defcard resp-table
-         (devcards/reagent resp-component)
-         [{:url "url1"
-           :key "1"}
-          {:url "url2"
-           :key "2"}]
-         {:inspect-data true
-          :frame        true
-          :history      true})
+  (devcards/reagent resp-component)
+  [{:url "url1"
+    :key "1"}
+   {:url "url2"
+    :key "2"}]
+  {:inspect-data true
+   :frame        true
+   :history      true})
 
 (defcard resp-table-mui
-         (devcards/reagent table/mui-table)
-         [{:url "url1"
-           :key "1"}
-          {:url "url2"
-           :key "2"}]
-         {:inspect-data true
-          :frame        true
-          :history      true})
+  (devcards/reagent table/mui-table)
+  [{:url "url1"
+    :key "1"}
+   {:url "url2"
+    :key "2"}]
+  {:inspect-data true
+   :frame        true
+   :history      true})
 
 (defcard resp-table-mui-2
-         (devcards/reagent table/mui-table)
-         [{:original "https://www.jocas.lt/", :hits [{:meta {}, :dict-entry-id "0", :begin-offset 881, :type "PHRASE", :end-offset 886, :text "Jocas"} {:meta {}, :dict-entry-id "0", :begin-offset 939, :end-offset 944, :type "PHRASE", :text "Jocas"} {:meta {}, :dict-entry-id "0", :end-offset 3316, :begin-offset 3311, :type "PHRASE", :text "Jocas"}], :archive-url "http://web.archive.org/web/20191109152029/https://www.jocas.lt/"} {:original "https://www.jocas.lt/", :hits [{:meta {}, :dict-entry-id "0", :begin-offset 881, :type "PHRASE", :end-offset 886, :text "Jocas"} {:meta {}, :dict-entry-id "0", :begin-offset 939, :end-offset 944, :type "PHRASE", :text "Jocas"} {:meta {}, :dict-entry-id "0", :end-offset 3316, :begin-offset 3311, :type "PHRASE", :text "Jocas"}], :archive-url "http://web.archive.org/web/20191110084139/https://www.jocas.lt/"}]
-         {:inspect-data true
-          :frame        true
-          :history      true})
+  (devcards/reagent table/mui-table)
+  [{:original "https://www.jocas.lt/", :hits [{:meta {}, :dict-entry-id "0", :begin-offset 881, :type "PHRASE", :end-offset 886, :text "Jocas"} {:meta {}, :dict-entry-id "0", :begin-offset 939, :end-offset 944, :type "PHRASE", :text "Jocas"} {:meta {}, :dict-entry-id "0", :end-offset 3316, :begin-offset 3311, :type "PHRASE", :text "Jocas"}], :archive-url "http://web.archive.org/web/20191109152029/https://www.jocas.lt/"} {:original "https://www.jocas.lt/", :hits [{:meta {}, :dict-entry-id "0", :begin-offset 881, :type "PHRASE", :end-offset 886, :text "Jocas"} {:meta {}, :dict-entry-id "0", :begin-offset 939, :end-offset 944, :type "PHRASE", :text "Jocas"} {:meta {}, :dict-entry-id "0", :end-offset 3316, :begin-offset 3311, :type "PHRASE", :text "Jocas"}], :archive-url "http://web.archive.org/web/20191110084139/https://www.jocas.lt/"}]
+  {:inspect-data true
+   :frame        true
+   :history      true})
 
 (defn ^:export main [] (devcards/start-devcard-ui!))
 
