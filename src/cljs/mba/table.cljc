@@ -22,10 +22,11 @@
 
 (defn prepare-data [resp]
   (mapcat (fn [{:keys [original hits archive-url]}]
-            (map (fn [{:keys [text]}]
-                   {:original original
+            (map (fn [{:keys [snippet text]}]
+                   {:original    original
+                    :snippet     snippet
                     :archive-url archive-url
-                    :phrase text}) hits)) resp))
+                    :phrase      text}) hits)) resp))
 
 (defn mui-table [resp]
   (let [data (prepare-data @resp)
