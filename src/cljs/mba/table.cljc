@@ -3,7 +3,7 @@
 
 (def selectors {:phrase        {:header-title "Paieškos frazė"
                                 :selector     #(-> % :phrase)
-                                :preview      #(-> % str)}
+                                :preview      (fn [phrase] [:b phrase])}
                 :snippet       {:header-title "Ištrauka"
                                 :selector     #(-> % :snippet)
                                 :preview      #(-> % str)}
