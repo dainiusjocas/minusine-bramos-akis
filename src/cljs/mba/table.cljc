@@ -6,7 +6,7 @@
                                 :preview      (fn [phrase] [:b phrase])}
                 :snippet       {:header-title "Ištrauka"
                                 :selector     #(-> % :snippet)
-                                :preview      #(-> % str)}
+                                :preview      (fn [{:keys [prefix infix suffix]}] [:p prefix [:b infix] suffix])}
                 :original      {:header-title "Dabar"
                                 :selector     #(-> % :original)
                                 :preview      (fn [val] [:a {:href   val
