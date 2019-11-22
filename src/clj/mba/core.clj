@@ -9,10 +9,12 @@
            (java.time.format DateTimeFormatter)))
 
 (defn extract-snippet [text highlight]
-  (format "<...>%s<b>%s</b>%s<...>"
-          (subs text (max 0 (- (:begin-offset highlight) 30)) (:begin-offset highlight))
-          (:text highlight)
-          (subs text (:end-offset highlight) (min (count text) (+ (:end-offset highlight) 30)))))
+  (let [prefix (subs text (max 0 (- (:begin-offset highlight) 30)) (:begin-offset highlight))
+        suffix (subs text (:end-offset highlight) (min (count text) (+ (:end-offset highlight) 30)))
+        infix (:text highlight)]
+   {:prefix prefix
+    :infix infix
+    :suffix suffix}))
 
 (def date-pattern (DateTimeFormatter/ofPattern "yyyyMMddHHmmss"))
 (defn archive-url->iso-date [archive-url]
