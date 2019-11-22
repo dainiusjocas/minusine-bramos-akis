@@ -4,13 +4,21 @@
             [clojure.string :as string]
             [mba.archive :as archive])
   (:import (org.jsoup Jsoup)
-           (org.jsoup.nodes Document)))
+           (org.jsoup.nodes Document)
+           (java.time LocalDateTime)
+           (java.time.format DateTimeFormatter)))
 
 (defn extract-snippet [text highlight]
   (format "<...>%s<b>%s</b>%s<...>"
           (subs text (max 0 (- (:begin-offset highlight) 30)) (:begin-offset highlight))
           (:text highlight)
           (subs text (:end-offset highlight) (min (count text) (+ (:end-offset highlight) 30)))))
+
+(def date-pattern (DateTimeFormatter/ofPattern "yyyyMMddHHmmss"))
+(defn archive-url->iso-date [archive-url]
+  (let [date-string (last (re-find #"http://web.archive.org/web/(\d+)/" archive-url))]
+    (.format (LocalDateTime/parse date-string date-pattern)
+             DateTimeFormatter/ISO_DATE_TIME)))
 
 (defn search-in-archive-records
   [highlighter-fn archive-records opts]
@@ -25,6 +33,7 @@
                             hits (map #(assoc % :snippet (extract-snippet text %)) (highlighter-fn text))]
                         (assoc archive-record
                           :archive-url archive-url
+                          :observed-date (archive-url->iso-date archive-url)
                           :html html
                           :text text
                           :hits hits))))))]
