@@ -18,12 +18,13 @@
                                                      :target "_blank"} observed-date])}})
 
 (defn prepare-data [resp]
-  (mapcat (fn [{:keys [original hits archive-url]}]
+  (mapcat (fn [{:keys [original hits archive-url observed-date]}]
             (map (fn [{:keys [snippet text]}]
-                   {:original    original
-                    :snippet     snippet
-                    :archive-url archive-url
-                    :phrase      text}) hits)) resp))
+                   {:original      original
+                    :snippet       snippet
+                    :archive-url   archive-url
+                    :observed-date observed-date
+                    :phrase        text}) hits)) resp))
 
 (defn mui-table [resp]
   (let [data (prepare-data @resp)
