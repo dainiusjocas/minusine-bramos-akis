@@ -74,8 +74,7 @@
      {:method       :get
       :url          "http://web.archive.org/cdx/search/cdx"
       :query-params (prepare-query-params default-query-params query-params)}
-     (fn [{:keys [error body status] :as resp}]
-       (log/spy resp)
+     (fn [{:keys [error body status]}]
        (when error
          (throw (RuntimeException. (str error))))
        (when (= 200 status)
