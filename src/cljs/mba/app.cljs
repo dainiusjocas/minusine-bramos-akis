@@ -176,11 +176,6 @@
                                             :on-click execute-mba}
                                            "Ieškoti" [:> mui-icons/Search]]]]]]
 
-     [:div [:> mui/Divider {:className   "divider"
-                            :orientation "horizontal"
-                            :variant     "middle"
-                            :absolute    true}]]
-
      [:br]
 
      [:div {:style {:flexGrow 1 :max-width "800px"}}
