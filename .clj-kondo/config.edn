@@ -1,0 +1,1 @@
+{:lint-as {devcards.core/defcard clojure.core/def}}

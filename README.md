@@ -18,9 +18,9 @@ Set environment variables:
 ```bash
 curl -s -X POST https://$API_ID.execute-api.$AWS_DEFAULT_REGION.amazonaws.com/Prod/observe -d '
 {
-  "dictionary": [{"text":"Karbauskis"}],
+  "dictionary": [{"text":"Jocas"}],
   "search": {
-    "url": "delfi.lt/news/.*","from":"201802","to":"201803"
+    "url": "jocas.lt"
  }
 }
 ' | json_pp

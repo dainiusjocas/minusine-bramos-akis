@@ -23,3 +23,16 @@ deploy-mba: package-mba
         --stack-name $(stack-name) \
         --capabilities CAPABILITY_IAM \
         --no-fail-on-empty-changeset
+
+setup-ui:
+	yarn add shadow-cljs
+
+release-ui: setup-ui
+	./node_modules/shadow-cljs/cli/runner.js -A:cljs release frontend
+
+dev-ui: setup-ui
+	./node_modules/shadow-cljs/cli/runner.js -A:cljs watch frontend
+
+cards-ui: setup-ui
+	./node_modules/shadow-cljs/cli/runner.js -A:cljs watch devcards
+

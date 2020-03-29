@@ -25,8 +25,10 @@
         observed-content (->> request
                               (mba/search-in-pages)
                               (remove #(empty? (:hits %)))
-                              (map #(select-keys % [:original :hits :archive-url])))]
+                              (map #(select-keys % [:original :hits :archive-url :observed-date])))]
     (write-to-os
       os
       {:statusCode 200
+       :headers    {"Access-Control-Allow-Origin" "*"
+                    "Content-Type" "application/json"}
        :body       (json/encode observed-content)})))
