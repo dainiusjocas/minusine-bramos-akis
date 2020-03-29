@@ -16,7 +16,7 @@ Resources:
       Tracing: "Active"
       MemorySize: 3008
       Handler: mba.Api::handleRequest
-      Runtime: java8
+      Runtime: java11
       CodeUri: target/minusine-bramos-akis.jar
       Policies:
         - AWSLambdaExecute
